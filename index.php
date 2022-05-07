@@ -186,7 +186,7 @@ echo <<<END
 				let pos = page && pages ? (page - .5) / pages : 0;
 				bookWidth = book.offsetWidth;
 				offset = bookWidth / 6;
-				pages = Math.round(book.scrollWidth / bookWidth);
+				pages = Math.round(book.scrollWidth / bookWidth) - 1;
 				page = pos ? Math.ceil(pos * pages) : Math.round(scrollX / bookWidth);
 				pageNum.textContent = `\${page + 1}/\${pages}`;
 				console.log("bookWidth", bookWidth, "| offset", offset, "| pages", pages, "| page", page);
@@ -276,15 +276,15 @@ echo <<<END
 		window.addEventListener('scroll', () => {
 			if (pageTurning)
 				return turnTimeout();
-			scrolledTo = Math.round(scrollX / bookWidth);
-			if (scrolledTo)
+			scrolledTo = Math.min(Math.round(scrollX / bookWidth), pages - 1);
+			if (scrolledTo > -1)
 				pageNum.textContent = `\${scrolledTo + 1}/\${pages}`;
 			if (pageCalc)
 				clearTimeout(pageCalc);
 			pageCalc = setTimeout(() => {
 				if (pageTurning)
 					return;
-				page = Math.round(scrollX / bookWidth);
+				page = Math.min(Math.round(scrollX / bookWidth), pages - 1);
 			}, 200);
 		}, { passive: true });
 
