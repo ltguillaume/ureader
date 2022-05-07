@@ -100,9 +100,15 @@ echo <<<END
 				}
 			#contents {
 				white-space: pre-wrap;
+/*				text-align: justify; */
 			}
 				#contents:first-line {
 					font-size: 3rem;
+				}
+				#contents:after {
+					display: block;
+					height: 100vh;
+					content: ' ';
 				}
 			#pagenum {
 				width: 100%;
