@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(0);
+
 $_setTheme = 'Change theme';
 $_decrSize = 'Decrease font size';
 $_incrSize = 'Increase font size';
@@ -26,6 +28,7 @@ echo <<<END
 			@font-face {
 				font-family: Fanwood;
 				src: url(data:application/x-font-woff;charset=utf-8;base64,{$font_data});
+				size-adjust: 110%;
 			}
 			:root {
 				--bg0: #cde;
@@ -38,7 +41,7 @@ echo <<<END
 			* {
 				margin: 0;
 				padding: 0;
-				font-family: Fanwood;
+				font-family: Fanwood, Garamond, "Times New Roman", Times, serif;
 				box-sizing: border-box;
 			}
 			html, body {
@@ -66,7 +69,7 @@ echo <<<END
 				cursor: pointer;
 			}
 				button::-moz-focus-inner {
-					border: none;
+					border: 0;
 				}
 			#controls {
 				display: none;
@@ -82,8 +85,8 @@ echo <<<END
 				height: 100%;
 				margin: 0 auto;
 				padding: 3rem 20px 2rem 20px;
-				font-size: 1.3rem;
-				line-height: 1.4;
+				font-size: 1.2rem;
+				line-height: 1.5;
 			}
 				html.js #book {
 					column-gap: 40px;
@@ -103,11 +106,11 @@ echo <<<END
 /*				text-align: justify; */
 			}
 				#contents:first-line {
-					font-size: 3rem;
+					font-size: 2.6rem;
 				}
 				#contents:after {
 					display: block;
-					height: 100vh;
+					height: calc(100vh - 10rem);
 					content: ' ';
 				}
 			#pagenum {
@@ -116,7 +119,6 @@ echo <<<END
 				position: fixed;
 				bottom: .5rem;
 				left: 0;
-				font-size: 1.1rem;
 				text-align: center;
 				background: 0;
 				opacity: .5;
@@ -174,7 +176,7 @@ echo <<<END
 			},
 			jumpPage = () => {
 				touchStartX = null;
-				let to = prompt('Page number', page + 1) - 1;
+				let to = prompt('{$_jumpPage}') - 1;
 				if (!isNaN(to) && to > -1)
 					turn(to);
 			},
