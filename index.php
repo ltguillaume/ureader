@@ -31,12 +31,11 @@ echo <<<END
 				size-adjust: 110%;
 			}
 			:root {
-				--bg0: #cde;
-				--txt0: #000;
-				--bg1: #141a21;
-				--txt1: #b0b0b0;
-				--bg2: #fff;
-				--txt2: #000;
+				--lightbg: #cde;
+				--lighttxt: #000;
+				--darkbg: #141a21;
+				--darktxt: #b0b0b0;
+				--whitebg: #fff;
 			}
 			* {
 				margin: 0;
@@ -49,16 +48,26 @@ echo <<<END
 				height: 100%;
 			}
 			body, button {
-				background: var(--bg0);
-				color: var(--txt0);
+				background: var(--lightbg);
+				color: var(--lighttxt);
 			}
 				body.theme1, body.theme1 button {
-					background: var(--bg1);
-					color: var(--txt1);
+					background: var(--darkbg);
+					color: var(--darktxt);
 				}
 				body.theme2, body.theme2 button {
-					background: var(--bg2);
-					color: var(--txt2);
+					background: var(--whitebg);
+					color: var(--lighttxt);
+				}
+				@media (prefers-color-scheme: dark) {
+					body, button {
+						background: var(--darkbg);
+						color: var(--darktxt);
+					}
+						body.theme1, body.theme1 button {
+							background: var(--lightbg);
+							color: var(--lighttxt);
+						}
 				}
 			button {
 				width: 3rem;
@@ -110,7 +119,7 @@ echo <<<END
 				}
 				#contents:after {
 					display: block;
-					height: calc(100vh - 10rem);
+					height: calc(100vh - 6rem);
 					content: ' ';
 				}
 			#pagenum {
@@ -137,8 +146,8 @@ echo <<<END
 	<body>
 		<div id="controls">
 			<button title="{$_setTheme}" onclick="setTheme()">&#9706;</button>
-			<button title="{$_decrSize}" onclick="setSize(-.1)">&#65293;</button>
-			<button title="{$_incrSize}" onclick="setSize(+.1)">&#65291;</button>
+			<button title="{$_decrSize}" onclick="setSize(-.05)">&#65293;</button>
+			<button title="{$_incrSize}" onclick="setSize(+.05)">&#65291;</button>
 		</div>
 		<div id="book">
 			<div id="contents">{$contents}</div>
