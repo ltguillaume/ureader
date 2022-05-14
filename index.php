@@ -1,7 +1,11 @@
 <?php
 
+$wwd = '';	// Optional protection with a watchword
+
 error_reporting(0);
 
+$_enterWwd = 'Enter the watchword:';
+$_wrongWwd = 'Wrong watchword!';
 $_setTheme = 'Change theme';
 $_decrSize = 'Decrease font size';
 $_incrSize = 'Increase font size';
@@ -11,6 +15,28 @@ $font = 'fanwood_text-webfont.woff';
 $font_data = base64_encode(file_get_contents($font));
 $contents = file_get_contents('contents.txt');
 $title = strtok($contents, "\n");
+
+if ($wwd) {
+	if (!isset($_GET['wwd']))
+		$msg = $_enterWwd;
+	else if ($_GET['wwd'] != $wwd)
+		$msg = $_wrongWwd .'\n'. $_enterWwd;
+
+	if ($msg)
+		die(<<<WWD
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{$title}</title>
+		<script>
+			if (wwd = prompt('{$msg}'))
+				location.assign(document.URL.split('?')[0]
+					+'?wwd='+ encodeURIComponent(wwd));
+		</script>
+	</head>
+</html>
+WWD);
+}
 
 echo <<<END
 <!DOCTYPE html>

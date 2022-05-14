@@ -6,6 +6,7 @@ Minimal code to present a preformatted plain text document for comforable readin
 - Font scaling
 - Keyboard, touch and mouse wheel navigation
 - 3 themes: reading mode (blue background), dark and light
+- Optional protection with a watchword, passed on directly as URL parameter or entered via a prompt
 - NoScript support (single page, no font size changes, no theme switching)
 - Uses [Fanwood Text](https://www.theleagueofmoveabletype.com/fanwood) web font
 
