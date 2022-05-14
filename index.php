@@ -1,11 +1,12 @@
 <?php
 
-$wwd = '';	// Optional protection with a watchword
+$watchword = '';	// Optional protection with a watchword
 
 error_reporting(0);
 
-$_enterWwd = 'Enter the watchword:';
-$_wrongWwd = 'Wrong watchword!';
+$_wrongWw  = 'Wrong watchword!';
+$_enterWw  = 'Enter the watchword:';
+$_submit   = 'Submit';
 $_setTheme = 'Change theme';
 $_decrSize = 'Decrease font size';
 $_incrSize = 'Increase font size';
@@ -16,26 +17,23 @@ $font_data = base64_encode(file_get_contents($font));
 $contents = file_get_contents('contents.txt');
 $title = strtok($contents, "\n");
 
-if ($wwd) {
-	if (!isset($_GET['wwd']))
-		$msg = $_enterWwd;
-	else if ($_GET['wwd'] != $wwd)
-		$msg = $_wrongWwd .'\n'. $_enterWwd;
+if ($watchword) {
+	if (!isset($_GET['ww']) && !isset($_POST['ww']))
+		$msg = $_enterWw;
+	else if ($_GET['ww'] != $watchword && $_POST['ww'] != $watchword)
+		$msg = "$_wrongWw<br>$_enterWw";
 
 	if ($msg)
-		die(<<<WWD
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>{$title}</title>
-		<script>
-			if (wwd = prompt('{$msg}'))
-				location.assign(document.URL.split('?')[0]
-					+'?wwd='+ encodeURIComponent(wwd));
-		</script>
-	</head>
-</html>
-WWD);
+		$contents = <<<WW
+			<form action="//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" method="post">
+				<br>{$msg}<br>
+				<input type="password" name="ww" autofocus><br>
+				<input type="submit" value="{$_submit}">
+			</form>
+			<script>
+				document.documentElement.className = 'ww';	// Disable white-space and JavaScript
+			</script>
+WW;
 }
 
 echo <<<END
@@ -73,6 +71,9 @@ echo <<<END
 				width: 100%;
 				height: 100%;
 			}
+				html.js #controls, html.js #pagenum {
+					display: block;
+				}
 			body, button {
 				background: var(--lightbg);
 				color: var(--lighttxt);
@@ -106,6 +107,14 @@ echo <<<END
 				button::-moz-focus-inner {
 					border: 0;
 				}
+			form {
+				text-align: center;
+			}
+			input {
+				margin: .3rem;
+				padding: .3rem;
+				font-family: sans-serif;
+			}
 			#controls {
 				display: none;
 				position: fixed;
@@ -113,9 +122,6 @@ echo <<<END
 				right: 0;
 				opacity: .5;
 			}
-				html.js #controls {
-					display: block;
-				}
 			#book {
 				height: 100%;
 				margin: 0 auto;
@@ -136,19 +142,20 @@ echo <<<END
 							column-gap: 40vw;
 						}
 				}
-			#contents {
+			html:not(.ww) #contents {
 				white-space: pre-wrap;
 /*				text-align: justify; */
 			}
 				#contents:first-line {
 					font-size: 2.6rem;
 				}
-				#contents:after {
+				html.js #contents:after {
 					display: block;
 					height: calc(100vh - 6rem);
 					content: ' ';
 				}
 			#pagenum {
+				display: none;
 				width: 100%;
 				height: 1.5rem;
 				position: fixed;
@@ -181,6 +188,9 @@ echo <<<END
 		<button id="pagenum" title="{$_gotoPage} (G)" onclick="gotoPage()"></button>
 	</body>
 	<script>
+		if (document.documentElement.className != 'js')
+			throw 0;
+
 		let
 			/* Variables */
 			bookWidth,
