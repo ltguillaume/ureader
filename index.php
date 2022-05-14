@@ -9,7 +9,7 @@ $_wrongWwd = 'Wrong watchword!';
 $_setTheme = 'Change theme';
 $_decrSize = 'Decrease font size';
 $_incrSize = 'Increase font size';
-$_jumpPage = 'Jump to page';
+$_gotoPage = 'Go to page';
 
 $font = 'fanwood_text-webfont.woff';
 $font_data = base64_encode(file_get_contents($font));
@@ -171,14 +171,14 @@ echo <<<END
 	</head>
 	<body>
 		<div id="controls">
-			<button title="{$_setTheme}" onclick="setTheme()">&#9706;</button>
-			<button title="{$_decrSize}" onclick="setSize(-.05)">&#65293;</button>
-			<button title="{$_incrSize}" onclick="setSize(+.05)">&#65291;</button>
+			<button title="{$_setTheme} (T)" onclick="setTheme()">&#9706;</button>
+			<button title="{$_decrSize} (-)" onclick="setSize(-.05)">&#65293;</button>
+			<button title="{$_incrSize} (+)" onclick="setSize(+.05)">&#65291;</button>
 		</div>
 		<div id="book">
 			<div id="contents">{$contents}</div>
 		</div>
-		<button id="pagenum" title="{$_jumpPage}" onclick="jumpPage()"></button>
+		<button id="pagenum" title="{$_gotoPage} (G)" onclick="gotoPage()"></button>
 	</body>
 	<script>
 		let
@@ -209,9 +209,9 @@ echo <<<END
 				calcDims();
 				turn(page);
 			},
-			jumpPage = () => {
+			gotoPage = () => {
 				touchStartX = null;
-				let to = prompt('{$_jumpPage}') - 1;
+				let to = prompt('{$_gotoPage}') - 1;
 				if (!isNaN(to) && to > -1)
 					turn(to);
 			},
@@ -260,9 +260,11 @@ echo <<<END
 				case 'PageDown':
 					page++;
 					break;
-				case 'j':
 				case 'g':
-					jumpPage();
+					gotoPage();
+					break;
+				case 't':
+					setTheme();
 					break;
 				case '-':
 					setSize(-.1);
