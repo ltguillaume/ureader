@@ -52,7 +52,6 @@ echo <<<END
 			@font-face {
 				font-family: Fanwood;
 				src: url(data:application/x-font-woff;charset=utf-8;base64,{$font_data});
-				size-adjust: 110%;
 			}
 			:root {
 				--lightbg: #cde;
@@ -126,8 +125,8 @@ echo <<<END
 				height: 100%;
 				margin: 0 auto;
 				padding: 3rem 20px 2rem 20px;
-				font-size: 1.2rem;
-				line-height: 1.5;
+				font-size: 1.3rem;
+				line-height: 1.4;
 			}
 				html.js #book {
 					column-gap: 40px;
@@ -161,6 +160,7 @@ echo <<<END
 				position: fixed;
 				bottom: .5rem;
 				left: 0;
+				font-size: 1rem;
 				text-align: center;
 				background: 0;
 				opacity: .5;
