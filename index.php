@@ -7,6 +7,9 @@ error_reporting(0);
 $_wrongWw  = 'Wrong watchword!';
 $_enterWw  = 'Enter the watchword:';
 $_submit   = 'Submit';
+$_rTime    = 'Reading time:';
+$_rMinutes = 'min';
+$_words    = 'words';
 $_setTheme = 'Change theme';
 $_decrSize = 'Decrease font size';
 $_incrSize = 'Increase font size';
@@ -15,6 +18,8 @@ $_gotoPage = 'Go to page';
 $font = 'fanwood_text-webfont.woff';
 $font_data = base64_encode(file_get_contents($font));
 $contents = file_get_contents('contents.txt');
+$words = str_word_count($contents);
+$rTime = round($words / 250);
 $title = strtok($contents, "\n");
 
 if ($watchword) {
@@ -178,6 +183,7 @@ echo <<<END
 	</head>
 	<body>
 		<div id="controls">
+			<span title="{$words} {$_words}" onclick="swapInfo(this)">{$_rTime} {$rTime} {$_rMinutes}</span>&nbsp;&nbsp;
 			<button title="{$_setTheme} (T)" onclick="setTheme()">&#9706;</button>
 			<button title="{$_decrSize} (-)" onclick="setSize(-.05)">&#65293;</button>
 			<button title="{$_incrSize} (+)" onclick="setSize(+.05)">&#65291;</button>
@@ -210,7 +216,12 @@ echo <<<END
 			contents = document.getElementById('contents'),
 			pageNum = document.getElementById('pagenum'),
 
-			/* Button Functions */
+			/* Control Functions */
+			swapInfo = (el) => {
+				let text = el.textContent;
+				el.textContent = el.title;
+				el.title = text;
+			}
 			setTheme = () => {
 				document.body.className = `theme\${theme = (theme + 1) % 3}`;
 			},
