@@ -2,7 +2,7 @@
 
 $watchword = '';	// Optional protection with a watchword
 
-error_reporting(0);
+error_reporting(0);	// E_ALL
 
 $_wrongWw  = 'Wrong watchword!';
 $_enterWw  = 'Enter the watchword:';
@@ -17,7 +17,7 @@ $_incrSize = 'Increase font size';
 $_gotoPage = 'Go to page';
 
 $font = 'fanwood_text.woff';
-$font_data = base64_encode(file_get_contents($font));
+$fontData = base64_encode(file_get_contents($font));
 $contents = file_get_contents('contents.txt');
 $words = str_word_count($contents);
 $rTime = round($words / 250);
@@ -57,7 +57,7 @@ echo <<<END
 		<style>
 			@font-face {
 				font-family: Fanwood;
-				src: url(data:application/x-font-woff;charset=utf-8;base64,{$font_data});
+				src: url(data:application/x-font-woff;base64,{$fontData});
 			}
 			:root {
 				--lightbg: #cde;
@@ -351,7 +351,6 @@ echo <<<END
 		}, { passive: false });
 
 		/* Window Listeners */
-		window.addEventListener('resize', calcDims);
 		window.addEventListener('scroll', () => {
 			if (freeScroll) return;
 			if (pageTurning)
@@ -367,6 +366,7 @@ echo <<<END
 				page = Math.min(Math.round(scrollX / bookWidth), pages - 1);
 			}, 200);
 		}, { passive: true });
+		new ResizeObserver(calcDims).observe(book);
 
 		/* Initialization */
 		setTimeout(calcDims, 400);
