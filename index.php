@@ -90,9 +90,9 @@ if (!isset($prompt)) {
 		$contents = preg_replace("/\*(.+?)\*/m", "<b>$1</b>", $contents);
 		$contents = preg_replace("/^##\s*(.+?)$\n/m", "<h2>$1</h2>", $contents);
 		$contents = preg_replace("/^#\s*(.+?)$\n/m",  "<h1>$1</h1>", $contents);
-		$contents = preg_replace("/(https?:\/\/.+?)(\s)/", "<a href=\"$1\">$1</a>$2", $contents);
+		$contents = preg_replace("/(?<!]\()(https?:\/\/.+?)(\s|$)/", "<a href=\"$1\">$1</a>$2", $contents);
+		$contents = preg_replace("/([^!])\[(.+?)\]\((.+?)\)/", "$1<a href=\"$3\">$2</a>", $contents);
 		$contents = preg_replace_callback("/!\[(.*?)\]\((.+?)\)/", "getImage", $contents);
-//	$contents = preg_replace("/!\[(.*?)\]\((.+?)\)/", "<img src=\"$uri/$2\" alt=\"$1\" title=\"$1\"/>", $contents);
 	}
 }
 
