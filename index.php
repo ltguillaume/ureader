@@ -1,21 +1,39 @@
 <?php
 
-$watchword = "";	// Optional protection with a watchword
-$markdown  = true;
+$watchword = "";    // Optional protection with a watchword
+$lang      = "";    // Override interface language
+$markdown  = true;  // Supports # h1, ## h2, _cursive_, *bold*, ![Image title](filename), HTTP links
 
-error_reporting(0);	// E_ALL
+error_reporting(0); // E_ALL
 
-$_wrongWw  = "Wrong watchword!";
-$_enterWw  = "Enter the watchword:";
-$_submit   = "Submit";
-$_rTime    = "Reading time:";
-$_rMinutes = "min";
-$_words    = "words";
-$_selMode  = "Selection mode";
-$_setTheme = "Change theme";
-$_decrSize = "Decrease font size";
-$_incrSize = "Increase font size";
-$_gotoPage = "Go to page";
+$str["en"] = (object)[
+	"notFound" => "Contents not found!",
+	"wrongWw"  => "Wrong watchword!",
+	"enterWw"  => "Enter the watchword",
+	"submit"   => "Submit",
+	"rTime"    => "Reading time",
+	"rMinutes" => "min",
+	"words"    => "words",
+	"selMode"  => "Selection mode",
+	"setTheme" => "Change theme",
+	"decrSize" => "Decrease font size",
+	"incrSize" => "Increase font size",
+	"gotoPage" => "Go to page"
+];
+$str["nl"] = (object)[
+	"notFound" => "Inhoud niet gevonden!",
+	"wrongWw"  => "Wachtwoord is onjuist!",
+	"enterWw"  => "Vul het wachtwoord in",
+	"submit"   => "Verzenden",
+	"rTime"    => "Leestijd",
+	"rMinutes" => "min",
+	"words"    => "woorden",
+	"selMode"  => "Selectiemodus",
+	"setTheme" => "Thema",
+	"decrSize" => "Kleinere letters",
+	"incrSize" => "Grotere letters",
+	"gotoPage" => "Naar pagina"
+];
 
 $uri = $_SERVER["REQUEST_URI"];
 $book = basename($uri) ?: ".";
@@ -26,18 +44,21 @@ $words = str_word_count($contents);
 $rTime = round($words / 250);
 $title = strtok($contents, "\n");
 
+$lang = $lang ?? substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
+$str  = $str[$lang] ?: $str["en"];
+
 if (isset($watchword)) {
 	if (!$_GET["ww"] && !$_POST["ww"])
-		$prompt = $_enterWw;
+		$prompt = "$str->enterWw:";
 	else if ($_GET["ww"] != $watchword && $_POST["ww"] != $watchword)
-		$prompt = "$_wrongWw<br>$_enterWw";
+		$prompt = "$str->wrongWw<br>$str->enterWw:";
 
 	if ($prompt)
 		$contents = <<<WW
 			<form action="//{$_SERVER["HTTP_HOST"]}{$_SERVER["REQUEST_URI"]}" method="post">
 				<br>{$prompt}<br>
 				<input type="password" name="ww" autofocus><br>
-				<input type="submit" value="{$_submit}">
+				<input type="submit" value="{$str->submit}">
 			</form>
 			<script>
 				document.documentElement.className = "ww";	// Disable white-space and JavaScript
@@ -240,15 +261,15 @@ echo <<<END
 	</head>
 	<body>
 		<div id="controls">
-			<span title="{$words} {$_words}" onclick="swapInfo(this)">{$_rTime} {$rTime} {$_rMinutes}</span>&nbsp;&nbsp;
-			<button title="{$_setTheme} (T)" onclick="setTheme()">&#9706;</button>
-			<button title="{$_decrSize} (-)" onclick="setSize(-.05)">&#65293;</button>
-			<button title="{$_incrSize} (+)" onclick="setSize(+.05)">&#65291;</button>
+			<span title="{$words} {$str->words}" onclick="swapInfo(this)">{$str->rTime}: {$rTime} {$str->rMinutes}</span>&nbsp;&nbsp;
+			<button title="{$str->setTheme} (T)" onclick="setTheme()">&#9706;</button>
+			<button title="{$str->decrSize} (-)" onclick="setSize(-.05)">&#65293;</button>
+			<button title="{$str->incrSize} (+)" onclick="setSize(+.05)">&#65291;</button>
 		</div>
 		<div id="book">
 			<div id="contents">{$contents}</div>
 		</div>
-		<button id="pagenum" title="{$_gotoPage} (G)" onclick="gotoPage()" oncontextmenu="setScroll(event)"></button>
+		<button id="pagenum" title="{$str->gotoPage} (G)" onclick="gotoPage()" oncontextmenu="setScroll(event)"></button>
 	</body>
 	<script>
 		if (document.documentElement.className != "js")
@@ -283,7 +304,7 @@ echo <<<END
 			setScroll = (e) => {
 				e.preventDefault();
 				if (freeScroll ^= 1)
-					pageNum.textContent = "{$_selMode}";
+					pageNum.textContent = "{$str->selMode}";
 				else
 					calcDims();
 			},
@@ -297,7 +318,7 @@ echo <<<END
 			},
 			gotoPage = () => {
 				touchStartX = null;
-				let to = prompt("{$_gotoPage}") - 1;
+				let to = prompt("{$str->gotoPage}:") - 1;
 				if (!isNaN(to) && to > -1)
 					turn(to);
 			},
