@@ -1,14 +1,16 @@
 <a href="https://buymeacoff.ee/ltGuillaume"><img title="Donate using Buy Me a Coffee" src="https://raw.githubusercontent.com/ltGuillaume/Resources/master/buybeer.svg"></a> <a href="https://liberapay.com/ltGuillaume/donate"><img title="Donate using Liberapay" src="https://raw.githubusercontent.com/ltGuillaume/Resources/master/liberapay.svg"></a>
 
 # uReader
-Minimal code to present a preformatted plain text document for comfortable reading on mobile and desktop.
+Minimal code to present a preformatted plain text document for comfortable reading on mobile and desktop. Some Markdown syntax is supported.
 
 ## Overview
 - Pagination
 - Font scaling
+- Support for subfolders/chapters
 - Keyboard, touch and mouse wheel navigation
 - 3 themes: reading mode (blue background), dark and light
 - NoScript support (without pagination, font scaling and theme switching)
+- Partial Markdown support `#, ##, __, **, [](), ![]()` and HTTP(S) links
 - Optional protection with a watchword, passed on directly as URL parameter or entered via a prompt
 
 ## Getting started

@@ -345,7 +345,7 @@ echo <<<END
 				pages = Math.round(book.scrollWidth / bookWidth) - 1;
 				page = pos ? Math.ceil(pos * pages) : Math.round(scrollX / bookWidth);
 				pageNum.textContent = `\${page + 1}/\${pages}`;
-				console.log("bookWidth", bookWidth, "| offset", offset, "| pages", pages, "| page", page);
+				console.log("bookWidth", bookWidth, "| offset", offset, "| pages", pages, "| page", page + 1);
 			},
 			turn = (to) => {
 				page = Math.max(to, 0);
