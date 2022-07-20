@@ -1,6 +1,7 @@
 <?php
 
 $watchword = '';	// Optional protection with a watchword
+$markdown  = true;
 
 error_reporting(0);	// E_ALL
 
@@ -16,6 +17,8 @@ $_decrSize = 'Decrease font size';
 $_incrSize = 'Increase font size';
 $_gotoPage = 'Go to page';
 
+$uri = $_SERVER["REQUEST_URI"];
+$book = basename($uri) ?: ".";
 $font = 'fanwood_text.woff';
 $fontData = base64_encode(file_get_contents($font));
 $contents = file_get_contents('contents.txt');
@@ -23,16 +26,16 @@ $words = str_word_count($contents);
 $rTime = round($words / 250);
 $title = strtok($contents, "\n");
 
-if ($watchword) {
-	if (!isset($_GET['ww']) && !isset($_POST['ww']))
-		$msg = $_enterWw;
+if (isset($watchword)) {
+	if (!$_GET["ww"] && !$_POST["ww"])
+		$prompt = $_enterWw;
 	else if ($_GET['ww'] != $watchword && $_POST['ww'] != $watchword)
-		$msg = "$_wrongWw<br>$_enterWw";
+		$prompt = "$_wrongWw<br>$_enterWw";
 
-	if ($msg)
+	if ($prompt)
 		$contents = <<<WW
 			<form action="//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" method="post">
-				<br>{$msg}<br>
+				<br>{$prompt}<br>
 				<input type="password" name="ww" autofocus><br>
 				<input type="submit" value="{$_submit}">
 			</form>
@@ -40,6 +43,25 @@ if ($watchword) {
 				document.documentElement.className = 'ww';	// Disable white-space and JavaScript
 			</script>
 WW;
+}
+
+if (!isset($prompt)) {
+	if ($markdown) {
+		function getImage($img) {
+			$book = $GLOBALS['book'];
+				return '<figure><img src="data:image;base64,'
+					. base64_encode(@file_get_contents("$book/$img[2]"))
+					."\"><figcaption>$img[1]</figcaption></figure>";
+		};
+
+		$contents = preg_replace('/_(.+?)_/m', "<i>$1</i>", $contents);
+		$contents = preg_replace('/\*(.+?)\*/m', "<b>$1</b>", $contents);
+		$contents = preg_replace('/^##\s*(.+?)$\n/m', "<h2>$1</h2>", $contents);
+		$contents = preg_replace('/^#\s*(.+?)$\n/m',  "<h1>$1</h1>", $contents);
+		$contents = preg_replace('/(https?:\/\/.+?)(\s)/', "<a href=\"$1\">$1</a>$2", $contents);
+		$contents = preg_replace_callback('/!\[(.*?)\]\((.+?)\)/', 'getImage', $contents);
+//	$contents = preg_replace('/!\[(.*?)\]\((.+?)\)/', "<img src=\"$uri/$2\" alt=\"$1\" title=\"$1\"/>", $contents);
+	}
 }
 
 echo <<<END
