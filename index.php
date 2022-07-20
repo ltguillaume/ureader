@@ -69,6 +69,7 @@ echo <<<END
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="referrer" content="no-referrer">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 		<noscript>
 			<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
@@ -135,8 +136,36 @@ echo <<<END
 				button::-moz-focus-inner {
 					border: 0;
 				}
+			figure {
+				max-width: 42%;
+				max-height: calc(100vh - 6rem);
+				margin-right: .5em;
+				padding: .3rem;
+				background: #fdf5e6bb;
+				color: var(--lighttxt);
+				font-size: 1rem;
+				font-style: italic;
+				text-align: center;
+				border-radius: 4px;
+				float: left;
+				break-inside: avoid-column;
+			}
+				figure img {
+					max-width: 100%;
+					max-height: calc(100vh - 9rem);
+				}
 			form {
 				text-align: center;
+			}
+			h1, h2 {
+				clear: both;
+			}
+			h1 {
+				font-size: 2.6rem;
+				font-weight: normal;
+			}
+			h2 {
+				font-size: 1.3rem;
 			}
 			input {
 				margin: .3rem;
@@ -372,7 +401,7 @@ echo <<<END
 			turn(page);
 		}, { passive: false });
 
-		/* Window Listeners */
+		/* Listeners */
 		window.addEventListener("scroll", () => {
 			if (freeScroll) return;
 			if (pageTurning)
