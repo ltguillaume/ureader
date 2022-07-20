@@ -42,7 +42,7 @@ $fontData = base64_encode(file_get_contents($font));
 $contents = file_get_contents("contents.txt");
 $words = str_word_count($contents);
 $rTime = round($words / 250);
-$title = strtok($contents, "\n");
+$title = preg_replace("/^#+ */", "", strtok($contents, "\n"));
 
 $lang = $lang ?? substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
 $str  = $str[$lang] ?: $str["en"];
