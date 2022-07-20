@@ -10,12 +10,13 @@ $_submit   = 'Submit';
 $_rTime    = 'Reading time:';
 $_rMinutes = 'min';
 $_words    = 'words';
+$_selMode  = 'Selection mode';
 $_setTheme = 'Change theme';
 $_decrSize = 'Decrease font size';
 $_incrSize = 'Increase font size';
 $_gotoPage = 'Go to page';
 
-$font = 'fanwood_text-webfont.woff';
+$font = 'fanwood_text.woff';
 $font_data = base64_encode(file_get_contents($font));
 $contents = file_get_contents('contents.txt');
 $words = str_word_count($contents);
@@ -107,6 +108,7 @@ echo <<<END
 				border: 0;
 				outline: 0;
 				cursor: pointer;
+				user-select: none;
 			}
 				button::-moz-focus-inner {
 					border: 0;
@@ -126,6 +128,10 @@ echo <<<END
 				right: 0;
 				opacity: .5;
 			}
+				#controls span {
+					cursor: pointer;
+					user-select: none;
+				}
 			#book {
 				height: 100%;
 				margin: 0 auto;
@@ -160,11 +166,11 @@ echo <<<END
 				}
 			#pagenum {
 				display: none;
-				width: 100%;
-				height: 1.5rem;
+				width: 6rem;
+				height: 3rem;
 				position: fixed;
-				bottom: .5rem;
-				left: 0;
+				bottom: 0;
+				left: calc(50vw - 3rem);
 				font-size: 1rem;
 				text-align: center;
 				background: 0;
@@ -191,7 +197,7 @@ echo <<<END
 		<div id="book">
 			<div id="contents">{$contents}</div>
 		</div>
-		<button id="pagenum" title="{$_gotoPage} (G)" onclick="gotoPage()"></button>
+		<button id="pagenum" title="{$_gotoPage} (G)" onclick="gotoPage()" oncontextmenu="setScroll(event)"></button>
 	</body>
 	<script>
 		if (document.documentElement.className != 'js')
@@ -202,6 +208,7 @@ echo <<<END
 			bookWidth,
 			fontSize = 1,
 			offset,
+			freeScroll = 0,
 			page,
 			pages,
 			pageCalc,
@@ -222,6 +229,13 @@ echo <<<END
 				el.textContent = el.title;
 				el.title = text;
 			}
+			setScroll = (e) => {
+				e.preventDefault();
+				if (freeScroll ^= 1)
+					pageNum.textContent = '{$_selMode}';
+				else
+					calcDims();
+			},
 			setTheme = () => {
 				document.body.className = `theme\${theme = (theme + 1) % 3}`;
 			},
@@ -270,6 +284,7 @@ echo <<<END
 
 		/* Keyboard Navigation */
 		document.addEventListener('keydown', (e) => {
+			if (freeScroll || e.altKey || e.ctrlKey) return;
 			switch (e.key) {
 				case 'ArrowUp':
 				case 'ArrowLeft':
@@ -303,15 +318,18 @@ echo <<<END
 
 		/* Touch Navigation */
 		book.addEventListener('touchstart', (e) => {
+			if (freeScroll) return;
 			e.preventDefault();
 			touchStartX = e.changedTouches[0].screenX;
 		}, 1);
 		book.addEventListener('touchmove', (e) => {
+			if (freeScroll) return;
 			e.preventDefault();
 			touchDeltaX = touchStartX - event.changedTouches[0].screenX;
 			scrollTo(page * bookWidth + touchDeltaX, 0);
 		}, 1);
 		book.addEventListener('touchend', (e) => {
+			if (freeScroll) return;
 			e.preventDefault();
 			touchStartX = null;
 			if (touchDeltaX < -offset)
@@ -323,6 +341,7 @@ echo <<<END
 
 		/* Wheel Navigation */
 		window.addEventListener('wheel', (e) => {
+			if (freeScroll) return;
 			e.preventDefault();
 			if (e.deltaY < 0)
 				page--;
@@ -334,6 +353,7 @@ echo <<<END
 		/* Window Listeners */
 		window.addEventListener('resize', calcDims);
 		window.addEventListener('scroll', () => {
+			if (freeScroll) return;
 			if (pageTurning)
 				return turnTimeout();
 			scrolledTo = Math.min(Math.round(scrollX / bookWidth), pages - 1);
