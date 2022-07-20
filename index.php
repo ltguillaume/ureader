@@ -1,27 +1,27 @@
 <?php
 
-$watchword = '';	// Optional protection with a watchword
+$watchword = "";	// Optional protection with a watchword
 $markdown  = true;
 
 error_reporting(0);	// E_ALL
 
-$_wrongWw  = 'Wrong watchword!';
-$_enterWw  = 'Enter the watchword:';
-$_submit   = 'Submit';
-$_rTime    = 'Reading time:';
-$_rMinutes = 'min';
-$_words    = 'words';
-$_selMode  = 'Selection mode';
-$_setTheme = 'Change theme';
-$_decrSize = 'Decrease font size';
-$_incrSize = 'Increase font size';
-$_gotoPage = 'Go to page';
+$_wrongWw  = "Wrong watchword!";
+$_enterWw  = "Enter the watchword:";
+$_submit   = "Submit";
+$_rTime    = "Reading time:";
+$_rMinutes = "min";
+$_words    = "words";
+$_selMode  = "Selection mode";
+$_setTheme = "Change theme";
+$_decrSize = "Decrease font size";
+$_incrSize = "Increase font size";
+$_gotoPage = "Go to page";
 
 $uri = $_SERVER["REQUEST_URI"];
 $book = basename($uri) ?: ".";
-$font = 'fanwood_text.woff';
+$font = "fanwood_text.woff";
 $fontData = base64_encode(file_get_contents($font));
-$contents = file_get_contents('contents.txt');
+$contents = file_get_contents("contents.txt");
 $words = str_word_count($contents);
 $rTime = round($words / 250);
 $title = strtok($contents, "\n");
@@ -29,18 +29,18 @@ $title = strtok($contents, "\n");
 if (isset($watchword)) {
 	if (!$_GET["ww"] && !$_POST["ww"])
 		$prompt = $_enterWw;
-	else if ($_GET['ww'] != $watchword && $_POST['ww'] != $watchword)
+	else if ($_GET["ww"] != $watchword && $_POST["ww"] != $watchword)
 		$prompt = "$_wrongWw<br>$_enterWw";
 
 	if ($prompt)
 		$contents = <<<WW
-			<form action="//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" method="post">
+			<form action="//{$_SERVER["HTTP_HOST"]}{$_SERVER["REQUEST_URI"]}" method="post">
 				<br>{$prompt}<br>
 				<input type="password" name="ww" autofocus><br>
 				<input type="submit" value="{$_submit}">
 			</form>
 			<script>
-				document.documentElement.className = 'ww';	// Disable white-space and JavaScript
+				document.documentElement.className = "ww";	// Disable white-space and JavaScript
 			</script>
 WW;
 }
@@ -48,19 +48,19 @@ WW;
 if (!isset($prompt)) {
 	if ($markdown) {
 		function getImage($img) {
-			$book = $GLOBALS['book'];
-				return '<figure><img src="data:image;base64,'
+			$book = $GLOBALS["book"];
+				return "<figure><img src=\"data:image;base64,"
 					. base64_encode(@file_get_contents("$book/$img[2]"))
 					."\"><figcaption>$img[1]</figcaption></figure>";
 		};
 
-		$contents = preg_replace('/_(.+?)_/m', "<i>$1</i>", $contents);
-		$contents = preg_replace('/\*(.+?)\*/m', "<b>$1</b>", $contents);
-		$contents = preg_replace('/^##\s*(.+?)$\n/m', "<h2>$1</h2>", $contents);
-		$contents = preg_replace('/^#\s*(.+?)$\n/m',  "<h1>$1</h1>", $contents);
-		$contents = preg_replace('/(https?:\/\/.+?)(\s)/', "<a href=\"$1\">$1</a>$2", $contents);
-		$contents = preg_replace_callback('/!\[(.*?)\]\((.+?)\)/', 'getImage', $contents);
-//	$contents = preg_replace('/!\[(.*?)\]\((.+?)\)/', "<img src=\"$uri/$2\" alt=\"$1\" title=\"$1\"/>", $contents);
+		$contents = preg_replace("/_(.+?)_/m", "<i>$1</i>", $contents);
+		$contents = preg_replace("/\*(.+?)\*/m", "<b>$1</b>", $contents);
+		$contents = preg_replace("/^##\s*(.+?)$\n/m", "<h2>$1</h2>", $contents);
+		$contents = preg_replace("/^#\s*(.+?)$\n/m",  "<h1>$1</h1>", $contents);
+		$contents = preg_replace("/(https?:\/\/.+?)(\s)/", "<a href=\"$1\">$1</a>$2", $contents);
+		$contents = preg_replace_callback("/!\[(.*?)\]\((.+?)\)/", "getImage", $contents);
+//	$contents = preg_replace("/!\[(.*?)\]\((.+?)\)/", "<img src=\"$uri/$2\" alt=\"$1\" title=\"$1\"/>", $contents);
 	}
 }
 
@@ -74,7 +74,7 @@ echo <<<END
 			<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
 		</noscript>
 		<script>
-			document.documentElement.className = 'js';
+			document.documentElement.className = "js";
 		</script>
 		<style>
 			@font-face {
@@ -184,7 +184,7 @@ echo <<<END
 				html.js #contents:after {
 					display: block;
 					height: calc(100vh - 6rem);
-					content: ' ';
+					content: " ";
 				}
 			#pagenum {
 				display: none;
@@ -222,7 +222,7 @@ echo <<<END
 		<button id="pagenum" title="{$_gotoPage} (G)" onclick="gotoPage()" oncontextmenu="setScroll(event)"></button>
 	</body>
 	<script>
-		if (document.documentElement.className != 'js')
+		if (document.documentElement.className != "js")
 			throw 0;
 
 		let
@@ -236,14 +236,14 @@ echo <<<END
 			pageCalc,
 			pageTurning,
 			theme = 0,
-			touchDevice = 'ontouchstart' in window,
+			touchDevice = "ontouchstart" in window,
 			touchStartX,
 			touchDeltaX,
 
 			/* Elements */
-			book = document.getElementById('book'),
-			contents = document.getElementById('contents'),
-			pageNum = document.getElementById('pagenum'),
+			book = document.getElementById("book"),
+			contents = document.getElementById("contents"),
+			pageNum = document.getElementById("pagenum"),
 
 			/* Control Functions */
 			swapInfo = (el) => {
@@ -254,7 +254,7 @@ echo <<<END
 			setScroll = (e) => {
 				e.preventDefault();
 				if (freeScroll ^= 1)
-					pageNum.textContent = '{$_selMode}';
+					pageNum.textContent = "{$_selMode}";
 				else
 					calcDims();
 			},
@@ -262,13 +262,13 @@ echo <<<END
 				document.body.className = `theme\${theme = (theme + 1) % 3}`;
 			},
 			setSize = (val) => {
-				contents.style.fontSize = (fontSize += val) +'em';
+				contents.style.fontSize = (fontSize += val) +"em";
 				calcDims();
 				turn(page);
 			},
 			gotoPage = () => {
 				touchStartX = null;
-				let to = prompt('{$_gotoPage}') - 1;
+				let to = prompt("{$_gotoPage}") - 1;
 				if (!isNaN(to) && to > -1)
 					turn(to);
 			},
@@ -290,12 +290,12 @@ echo <<<END
 				page = Math.min(page, pages - 1);
 				scrollTo({
 					left: page * bookWidth,
-					behavior: 'smooth'
+					behavior: "smooth"
 				});
 				pageNum.textContent = `\${page + 1}/\${pages}`;
 				turnTimeout();
 			},
-			turnTimeout = () => { // prevent 'onscroll'; prevent 'onresize', triggered by keyboard popup
+			turnTimeout = () => { // prevent "onscroll"; prevent "onresize", triggered by keyboard popup
 				if (pageTurning)
 					clearTimeout(pageTurning);
 				pageTurning = setTimeout(() => {
@@ -305,30 +305,30 @@ echo <<<END
 			};
 
 		/* Keyboard Navigation */
-		document.addEventListener('keydown', (e) => {
+		document.addEventListener("keydown", (e) => {
 			if (freeScroll || e.altKey || e.ctrlKey) return;
 			switch (e.key) {
-				case 'ArrowUp':
-				case 'ArrowLeft':
-				case 'PageUp':
+				case "ArrowUp":
+				case "ArrowLeft":
+				case "PageUp":
 					page--;
 					break;
-				case 'ArrowDown':
-				case 'ArrowRight':
-				case 'PageDown':
+				case "ArrowDown":
+				case "ArrowRight":
+				case "PageDown":
 					page++;
 					break;
-				case 'g':
+				case "g":
 					gotoPage();
 					break;
-				case 't':
+				case "t":
 					setTheme();
 					break;
-				case '-':
+				case "-":
 					setSize(-.1);
 					break;
-				case '+':
-				case '=':
+				case "+":
+				case "=":
 					setSize(+.1);
 					break;
 				default:
@@ -339,18 +339,18 @@ echo <<<END
 		});
 
 		/* Touch Navigation */
-		book.addEventListener('touchstart', (e) => {
+		book.addEventListener("touchstart", (e) => {
 			if (freeScroll) return;
 			e.preventDefault();
 			touchStartX = e.changedTouches[0].screenX;
 		}, 1);
-		book.addEventListener('touchmove', (e) => {
+		book.addEventListener("touchmove", (e) => {
 			if (freeScroll) return;
 			e.preventDefault();
 			touchDeltaX = touchStartX - event.changedTouches[0].screenX;
 			scrollTo(page * bookWidth + touchDeltaX, 0);
 		}, 1);
-		book.addEventListener('touchend', (e) => {
+		book.addEventListener("touchend", (e) => {
 			if (freeScroll) return;
 			e.preventDefault();
 			touchStartX = null;
@@ -362,7 +362,7 @@ echo <<<END
 		}, 1);
 
 		/* Wheel Navigation */
-		window.addEventListener('wheel', (e) => {
+		window.addEventListener("wheel", (e) => {
 			if (freeScroll) return;
 			e.preventDefault();
 			if (e.deltaY < 0)
@@ -373,7 +373,7 @@ echo <<<END
 		}, { passive: false });
 
 		/* Window Listeners */
-		window.addEventListener('scroll', () => {
+		window.addEventListener("scroll", () => {
 			if (freeScroll) return;
 			if (pageTurning)
 				return turnTimeout();
