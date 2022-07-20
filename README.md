@@ -26,3 +26,4 @@ Minimal code to present a preformatted plain text document for comfortable readi
 
 ## Credits
 * The [Fanwood Text](https://www.theleagueofmoveabletype.com/fanwood) font by Barry Schwartz
+* [Open Book icon](https://favicon.io/emoji-favicons/open-book/) from [Twemoji](https://twemoji.twitter.com) by Twitter under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0)

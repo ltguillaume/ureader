@@ -71,6 +71,8 @@ if (isset($watchword)) {
 WW;
 }
 
+$icon     = pathinfo(__FILE__)["filename"] .".ico";
+$iconData = is_readable($icon) ? base64_encode(file_get_contents($icon)) : "";
 $fontData = is_readable($font) ? base64_encode(file_get_contents($font)) : "";
 $words    = str_word_count($contents);
 $rTime    = round($words / 250);
@@ -98,6 +100,7 @@ echo <<<END
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="icon" type="image/ico" href="url(data:image/x-icon;base64,{$iconData}">
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="referrer" content="no-referrer">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
