@@ -1,0 +1,8 @@
+<?php
+
+$font      = "fanwood_text.woff"; // Set an alternative font
+$lang      = "";                  // Override interface language
+$markdown  = true;                // Supports # h1, ## h2, _cursive_, *bold*, ![Image title](filename), HTTP links
+$watchword = "";                  // Optional protection with a watchword
+
+?>

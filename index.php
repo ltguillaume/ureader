@@ -1,9 +1,5 @@
 <?php
 
-$watchword = "";    // Optional protection with a watchword
-$lang      = "";    // Override interface language
-$markdown  = true;  // Supports # h1, ## h2, _cursive_, *bold*, ![Image title](filename), HTTP links
-
 error_reporting(0); // E_ALL
 
 $str["en"] = (object)[
@@ -35,17 +31,26 @@ $str["nl"] = (object)[
 	"gotoPage" => "Naar pagina"
 ];
 
-$uri = $_SERVER["REQUEST_URI"];
-$book = basename($uri) ?: ".";
-$font = "fanwood_text.woff";
-$fontData = base64_encode(file_get_contents($font));
-$contents = file_get_contents("contents.txt");
-$words = str_word_count($contents);
-$rTime = round($words / 250);
-$title = preg_replace("/^#+ */", "", strtok($contents, "\n"));
+$uri       = $_SERVER["REQUEST_URI"];
+$book      = basename($uri) ?: ".";
+$contents  = "$book/contents.txt";
+$font      = "fanwood_text.woff";
+$markdown  = true;
+$config    = "config.php";
+
+if (is_readable($config))
+	include $config;
+if (is_readable("$book/$config"))
+	include "$book/$config";
 
 $lang = $lang ?? substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
 $str  = $str[$lang] ?: $str["en"];
+
+if (!is_readable($contents))
+	exit($str->notFound);
+	
+$contents  = file_get_contents($contents);
+$title     = preg_replace("/^#+ */", "", strtok($contents, "\n"));
 
 if (isset($watchword)) {
 	if (!$_GET["ww"] && !$_POST["ww"])
@@ -65,6 +70,10 @@ if (isset($watchword)) {
 			</script>
 WW;
 }
+
+$fontData = is_readable($font) ? base64_encode(file_get_contents($font)) : "";
+$words    = str_word_count($contents);
+$rTime    = round($words / 250);
 
 if (!isset($prompt)) {
 	if ($markdown) {
