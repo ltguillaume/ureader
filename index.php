@@ -31,8 +31,8 @@ $str["nl"] = (object)[
 	"gotoPage" => "Naar pagina"
 ];
 
-$uri       = $_SERVER["REQUEST_URI"];
-$book      = basename($uri) ?: ".";
+$dir       = substr($_SERVER["REQUEST_URI"], strlen(dirname($_SERVER['SCRIPT_NAME'])));
+$book      = trim($dir, "/") ?: ".";
 $contents  = "$book/contents.txt";
 $font      = "fanwood_text.woff";
 $markdown  = true;
