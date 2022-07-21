@@ -2,7 +2,8 @@
 
 $font      = "fanwood_text.woff"; // Set an alternative font
 $lang      = "";                  // Override interface language
-$markdown  = true;                // Supports # h1, ## h2, _cursive_, *bold*, ![Image title](filename), HTTP links
-$watchword = "";                  // Optional protection with a watchword
+$markdown  = true;                // Enable Markdown: #, ##, _cursive_, *bold*, ![Image title](filename), http(s):// links
+$watchword = "";                  // Protect contents with a watchword
+$wordsPMin = 250;                 // Set the reading speed in words per minute
 
 ?>

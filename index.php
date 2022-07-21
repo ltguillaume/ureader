@@ -33,10 +33,11 @@ $str["nl"] = (object)[
 
 $dir       = substr($_SERVER["REQUEST_URI"], strlen(dirname($_SERVER['SCRIPT_NAME'])));
 $book      = trim($dir, "/") ?: ".";
+$config    = "config.php";
 $contents  = "$book/contents.txt";
 $font      = "fanwood_text.woff";
 $markdown  = true;
-$config    = "config.php";
+$wordsPMin = 250;
 
 if (is_readable($config))
 	include $config;
@@ -74,10 +75,11 @@ WW;
 $icon     = pathinfo(__FILE__)["filename"] .".ico";
 $iconData = is_readable($icon) ? base64_encode(file_get_contents($icon)) : "";
 $fontData = is_readable($font) ? base64_encode(file_get_contents($font)) : "";
-$words    = str_word_count($contents);
-$rTime    = round($words / 250);
 
 if (!isset($prompt)) {
+	$words    = str_word_count($contents);
+	$rTime    = round($words / $wordsPMin);
+
 	if ($markdown) {
 		function getImage($img) {
 			$book = $GLOBALS["book"];
