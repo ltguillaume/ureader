@@ -353,12 +353,12 @@ echo <<<END
 			turn = (to) => {
 				page = Math.max(to, 0);
 				page = Math.min(page, pages - 1);
+				turnTimeout();
 				scrollTo({
 					left: page * bookWidth,
 					behavior: "smooth"
 				});
 				pageNum.textContent = `\${page + 1}/\${pages}`;
-				turnTimeout();
 			},
 			turnTimeout = () => { // prevent "onscroll"; prevent "onresize", triggered by keyboard popup
 				if (pageTurning)
@@ -438,6 +438,7 @@ echo <<<END
 		}, { passive: false });
 
 		/* Listeners */
+		window.addEventListener('resize', calcDims);
 		window.addEventListener("scroll", () => {
 			if (freeScroll) return;
 			if (pageTurning)
@@ -453,7 +454,6 @@ echo <<<END
 				page = Math.min(Math.round(scrollX / bookWidth), pages - 1);
 			}, 200);
 		}, { passive: true });
-		new ResizeObserver(calcDims).observe(book);
 
 		/* Initialization */
 		setTimeout(calcDims, 400);
