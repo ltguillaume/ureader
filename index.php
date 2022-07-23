@@ -118,11 +118,13 @@ echo <<<END
 				src: url(data:application/x-font-woff;base64,{$fontData});
 			}
 			:root {
-				--lightbg: #cde;
-				--lighttxt: #000;
-				--darkbg: #141a21;
-				--darktxt: #b0b0b0;
-				--whitebg: #fff;
+				--figurebg: #fdf5e6bb;
+				--lightbg:  #ccddee;
+				--lighttxt: #000000;
+				--linktxt:  #666e77;
+				--darkbg:   #141a21;
+				--darktxt:  #b0b0b0;
+				--whitebg:  #ffffff;
 			}
 			* {
 				margin: 0;
@@ -160,6 +162,17 @@ echo <<<END
 							color: var(--lighttxt);
 						}
 				}
+			a {
+				color: var(--linktxt);
+				text-decoration: none;
+			}
+				a:hover {
+					border-bottom: .5px solid var(--linktxt);
+				}
+				a:before {
+					font-size: .8em;
+					content: "\\29c9  ";
+				}
 			button {
 				width: 3rem;
 				height: 3rem;
@@ -176,7 +189,7 @@ echo <<<END
 				max-height: calc(100vh - 6rem);
 				margin-right: .5em;
 				padding: .3rem;
-				background: #fdf5e6bb;
+				background: var(--figurebg);
 				color: var(--lighttxt);
 				font-size: 1rem;
 				font-style: italic;
@@ -423,6 +436,8 @@ echo <<<END
 				page--;
 			else if (touchDeltaX > offset)
 				page++;
+			else if (e.target.tagName == "A" && Math.abs(touchDeltaX) < 10)
+				e.target.click();
 			turn(page);
 		}, 1);
 
