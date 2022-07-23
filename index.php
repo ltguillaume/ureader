@@ -278,8 +278,8 @@ echo <<<END
 		<div id="controls">
 			<span title="{$words} {$str->words}" onclick="swapInfo(this)">{$str->rTime}: {$rTime} {$str->rMinutes}</span>&nbsp;&nbsp;
 			<button title="{$str->setTheme} (T)" onclick="setTheme()">&#9706;</button>
-			<button title="{$str->decrSize} (-)" onclick="setSize(-.05)">&#65293;</button>
-			<button title="{$str->incrSize} (+)" onclick="setSize(+.05)">&#65291;</button>
+			<button title="{$str->decrSize} (-)" onclick="setSize(-1)">&#65293;</button>
+			<button title="{$str->incrSize} (+)" onclick="setSize(+1)">&#65291;</button>
 		</div>
 		<div id="book">
 			<div id="contents">{$contents}</div>
@@ -327,7 +327,7 @@ echo <<<END
 				document.body.className = `theme\${theme = (theme + 1) % 3}`;
 			},
 			setSize = (val) => {
-				contents.style.fontSize = (fontSize += val) +"em";
+				contents.style.fontSize = (val < 0 && fontSize < .51 ? .5 : fontSize += val / 20) +"em";
 				calcDims();
 				turn(page);
 			},
@@ -390,11 +390,11 @@ echo <<<END
 					setTheme();
 					break;
 				case "-":
-					setSize(-.1);
+					setSize(-1);
 					break;
 				case "+":
 				case "=":
-					setSize(+.1);
+					setSize(+1);
 					break;
 				default:
 					return;
