@@ -129,6 +129,7 @@ echo <<<END
 				padding: 0;
 				font-family: Fanwood, Garamond, "Times New Roman", Times, serif;
 				box-sizing: border-box;
+				user-select: none;
 			}
 			html, body {
 				width: 100%;
@@ -166,7 +167,6 @@ echo <<<END
 				border: 0;
 				outline: 0;
 				cursor: pointer;
-				user-select: none;
 			}
 				button::-moz-focus-inner {
 					border: 0;
@@ -240,6 +240,7 @@ echo <<<END
 				}
 			html:not(.ww) #contents {
 				white-space: pre-wrap;
+				user-select: text;
 /*				text-align: justify; */
 			}
 				#contents:first-line {
