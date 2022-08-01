@@ -348,7 +348,7 @@ echo <<<END
 				touchStartX = null;
 				let to = prompt("{$str->gotoPage}:") - 1;
 				if (!isNaN(to) && to > -1)
-					turn(to);
+					turn(to, false);
 			},
 
 			/* Pagination Functions */
@@ -363,13 +363,13 @@ echo <<<END
 				pageNum.textContent = `\${page + 1}/\${pages}`;
 				console.log("bookWidth", bookWidth, "| offset", offset, "| pages", pages, "| page", page + 1);
 			},
-			turn = (to) => {
+			turn = (to, smooth = true) => {
 				page = Math.max(to, 0);
 				page = Math.min(page, pages - 1);
 				turnTimeout();
 				scrollTo({
 					left: page * bookWidth,
-					behavior: "smooth"
+					behavior: smooth ? "smooth" : "auto"
 				});
 				pageNum.textContent = `\${page + 1}/\${pages}`;
 			},
