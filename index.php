@@ -102,7 +102,7 @@ echo <<<END
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="icon" type="image/ico" href="url(data:image/x-icon;base64,{$iconData}">
+		<link rel="icon" type="image/ico" href="data:image/x-icon;base64,{$iconData}">
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="referrer" content="no-referrer">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
