@@ -14,7 +14,7 @@ $str["en"] = (object)[
 	"setTheme" => "Change theme",
 	"decrSize" => "Decrease font size",
 	"incrSize" => "Increase font size",
-	"gotoPage" => "Go to page"
+	"jumpPage" => "Jump to page"
 ];
 $str["nl"] = (object)[
 	"notFound" => "Inhoud niet gevonden!",
@@ -28,7 +28,7 @@ $str["nl"] = (object)[
 	"setTheme" => "Thema",
 	"decrSize" => "Kleinere letters",
 	"incrSize" => "Grotere letters",
-	"gotoPage" => "Naar pagina"
+	"jumpPage" => "Naar pagina"
 ];
 
 $dir       = substr($_SERVER["REQUEST_URI"], strlen(dirname($_SERVER['SCRIPT_NAME'])));
@@ -297,7 +297,7 @@ echo <<<END
 		<div id="book">
 			<div id="contents">{$contents}</div>
 		</div>
-		<button id="pagenum" title="{$str->gotoPage} (G)" onclick="gotoPage()" oncontextmenu="setScroll(event)"></button>
+		<button id="pagenum" title="{$str->jumpPage} (P)" onclick="jumpPage()" oncontextmenu="setScroll(event)"></button>
 	</body>
 	<script>
 		if (document.documentElement.className != "js")
@@ -344,11 +344,11 @@ echo <<<END
 				calcDims();
 				turn(page);
 			},
-			gotoPage = () => {
+			jumpPage = () => {
 				touchStartX = null;
-				let to = prompt("{$str->gotoPage}:") - 1;
+				let to = prompt("{$str->jumpPage}:") - 1;
 				if (!isNaN(to) && to > -1)
-					turn(to, false);
+					jump(to);
 			},
 
 			/* Pagination Functions */
@@ -363,6 +363,7 @@ echo <<<END
 				pageNum.textContent = `\${page + 1}/\${pages}`;
 				console.log("bookWidth", bookWidth, "| offset", offset, "| pages", pages, "| page", page + 1);
 			},
+			jump = (to) => turn(to, false),
 			turn = (to, smooth = true) => {
 				page = Math.max(to, 0);
 				page = Math.min(page, pages - 1);
@@ -396,8 +397,8 @@ echo <<<END
 				case "PageDown":
 					page++;
 					break;
-				case "g":
-					gotoPage();
+				case "p":
+					jumpPage();
 					break;
 				case "t":
 					setTheme();
