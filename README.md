@@ -3,6 +3,8 @@
 # uReader
 Minimal code to present a preformatted plain text document for comfortable reading on mobile and desktop. Some Markdown syntax is supported.
 
+![Screenshot](SCREENSHOT.gif)
+
 ## Overview
 - Pagination
 - Font scaling
