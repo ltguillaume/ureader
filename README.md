@@ -17,7 +17,7 @@ Minimal code to present a preformatted plain text document for comfortable readi
 
 ## Getting started
 1. Copy the files to a server with PHP
-1. Copy `config.php.template` to `config.php` and set the variable `$wwd` if you would like watchword protection
+1. (Optional) Copy `config.php.template` to `config.php` and set the variables to your liking
 	- For Apache, use `.htaccess` to prevent access to the contents directly
 	- For nginx, add something like this to do the same:
 	```
@@ -26,7 +26,7 @@ Minimal code to present a preformatted plain text document for comfortable readi
     }
 	```
 1. Put the preformatted text in `contents.txt`
-1. Alternatively, move `contents.txt` into a subfolder (together with `config.php` for per-book settings)
+1. For offering multiple books/chapters you can put `contents.txt` into subfolders (and optionally add a `config.php` for per-book settings)
 
 ## Credits
 * The [Fanwood Text](https://www.theleagueofmoveabletype.com/fanwood) font by Barry Schwartz
