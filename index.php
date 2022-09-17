@@ -45,7 +45,7 @@ if (is_readable("$book/$config"))
 	include "$book/$config";
 
 $lang = $lang ?? substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
-$str  = $str[$lang] ?: $str["en"];
+$str  = $str[$lang] ?? $str["en"];
 
 if (!is_readable($contents))
 	exit($str->notFound);
