@@ -34,9 +34,8 @@ $str["nl"] = (object)[
 $dir       = substr($_SERVER["REQUEST_URI"], strlen(dirname($_SERVER['SCRIPT_NAME'])));
 $book      = trim($dir, "/") ?: ".";
 $config    = "config.php";
-$contents  = "$book/contents.txt";
+$contents  = "$book/contents.";
 $font      = "fanwood_text.woff";
-$markdown  = true;
 $wordsPMin = 250;
 
 if (is_readable($config))
@@ -47,9 +46,16 @@ if (is_readable("$book/$config"))
 $lang = $lang ?? substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
 $str  = $str[$lang] ?? $str["en"];
 
-if (!is_readable($contents))
+foreach (["md", "txt"] as $ext) {
+	if (is_readable($contents . $ext)) {
+		$contents .= $ext;
+		$format    = $ext;
+		break;
+	}
+}
+if (!isset($format))
 	exit($str->notFound);
-	
+
 $contents  = file_get_contents($contents);
 $title     = preg_replace("/^#+ */", "", strtok($contents, "\n"));
 
@@ -80,7 +86,7 @@ if (!isset($prompt)) {
 	$words    = str_word_count($contents);
 	$rTime    = round($words / $wordsPMin);
 
-	if ($markdown) {
+	if ($format == "md") {
 		function getImage($img) {
 			$book = $GLOBALS["book"];
 				return "<figure><img src=\"data:image;base64,"
@@ -92,10 +98,10 @@ if (!isset($prompt)) {
 		$contents = preg_replace("/\*(.+?)\*/m", "<b>$1</b>", $contents);
 		$contents = preg_replace("/^##\s*(.+?)$\n/m", "<h2>$1</h2>", $contents);
 		$contents = preg_replace("/^#\s*(.+?)$\n/m",  "<h1>$1</h1>", $contents);
-		$contents = preg_replace("/(?<!]\()(https?:\/\/.+?)(\s|$)/", "<a rel=\"noreferrer noopener\" href=\"$1\">$1</a>$2", $contents);
 		$contents = preg_replace("/([^!])\[(.+?)\]\((.+?)\)/", "$1<a rel=\"noreferrer noopener\" href=\"$3\">$2</a>", $contents);
 		$contents = preg_replace_callback("/!\[(.*?)\]\((.+?)\)/", "getImage", $contents);
 	}
+	$contents = preg_replace("/(?<!]\()(https?:\/\/.+?)(\s|$)/", "<a rel=\"noreferrer noopener\" href=\"$1\">$1</a>$2", $contents);
 }
 
 echo <<<END

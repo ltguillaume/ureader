@@ -25,8 +25,8 @@ Minimal code to present a preformatted plain text document for comfortable readi
       rewrite ^ /index.php;
     }
 	```
-1. Put the preformatted text in `contents.txt`
-1. For offering multiple books/chapters you can put `contents.txt` into subfolders (and optionally add a `config.php` for per-book settings)
+1. Put the preformatted text in `contents.txt`, or Markdown formatted text in `contents.md`
+1. For offering multiple books/chapters you can put `contents.txt`/`contents.md` into subfolders (and optionally add a `config.php` for per-book settings)
 
 ## Credits
 * The [Fanwood Text](https://www.theleagueofmoveabletype.com/fanwood) font by Barry Schwartz
