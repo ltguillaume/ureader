@@ -31,7 +31,7 @@ $str["nl"] = (object)[
 	"jumpPage" => "Naar pagina"
 ];
 
-$dir       = substr($_SERVER["REQUEST_URI"], strlen(dirname($_SERVER['SCRIPT_NAME'])));
+$dir       = substr(strtok($_SERVER['REQUEST_URI'], '?'), strlen(dirname($_SERVER['SCRIPT_NAME'])));
 $book      = trim($dir, "/") ?: ".";
 $config    = "config.php";
 $contents  = "$book/contents.";
