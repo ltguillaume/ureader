@@ -101,7 +101,7 @@ if (!isset($prompt)) {
 		$contents = preg_replace("/([^!])\[(.+?)\]\((.+?)\)/", "$1<a rel=\"noreferrer noopener\" href=\"$3\">$2</a>", $contents);
 		$contents = preg_replace_callback("/!\[(.*?)\]\((.+?)\)/", "getImage", $contents);
 	}
-	$contents = preg_replace("/(?<!]\()(https?:\/\/.+?)(\s|$)/", "<a rel=\"noreferrer noopener\" href=\"$1\">$1</a>$2", $contents);
+	$contents = preg_replace("/(?<!href=\")(https?:\/\/.+?)(\s|$)/", "<a rel=\"noreferrer noopener\" href=\"$1\">$1</a>$2", $contents);
 }
 
 echo <<<END
@@ -175,7 +175,7 @@ echo <<<END
 				a:hover {
 					border-bottom: .5px solid var(--linktxt);
 				}
-				a:before {
+				a[href*=":"]:before {
 					font-size: .8em;
 					content: "\\29c9  ";
 				}
