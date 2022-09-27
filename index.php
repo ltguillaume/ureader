@@ -461,6 +461,7 @@ echo <<<END
 				page++;
 			else if (e.target.tagName == "A" && Math.abs(touchDeltaX) < 10)
 				e.target.click();
+			touchDeltaX = 0;
 			turn(page);
 		}, 1);
 
