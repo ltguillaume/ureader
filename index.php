@@ -459,7 +459,7 @@ echo <<<END
 				page--;
 			else if (touchDeltaX > offset)
 				page++;
-			else if (e.target.tagName == "A" && Math.abs(touchDeltaX) < 10)
+			else if (e.target.id != "contents" && Math.abs(touchDeltaX) < 10)
 				e.target.click();
 			touchDeltaX = 0;
 			turn(page);
