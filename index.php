@@ -78,6 +78,7 @@ if (isset($watchword)) {
 WW;
 }
 
+$counters = "";
 $icon     = pathinfo(__FILE__)["filename"] .".ico";
 $iconData = is_readable($icon) ? base64_encode(file_get_contents($icon)) : "";
 $fontData = is_readable($font) ? base64_encode(file_get_contents($font)) : "";
@@ -85,6 +86,7 @@ $fontData = is_readable($font) ? base64_encode(file_get_contents($font)) : "";
 if (!isset($prompt)) {
 	$words    = str_word_count($contents);
 	$rTime    = round($words / $wordsPMin);
+	$counters = $rTime < 1 ? "" : "<span title=\"$words $str->words\" onclick=\"swapInfo(this)\">$str->rTime: $rTime $str->rMinutes</span>";
 
 	if ($format == "md") {
 		function getImage($img) {
@@ -304,7 +306,7 @@ echo <<<END
 	</head>
 	<body>
 		<div id="controls">
-			<span title="{$words} {$str->words}" onclick="swapInfo(this)">{$str->rTime}: {$rTime} {$str->rMinutes}</span>&nbsp;&nbsp;
+			{$counters}&nbsp;&nbsp;
 			<button title="{$str->setTheme} (T)" onclick="setTheme()">&#9706;</button>
 			<button title="{$str->decrSize} (-)" onclick="setSize(-1)">&#65293;</button>
 			<button title="{$str->incrSize} (+)" onclick="setSize(+1)">&#65291;</button>
