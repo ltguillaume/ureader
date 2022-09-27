@@ -22,7 +22,8 @@ Minimal code to present a preformatted plain text document for comfortable readi
 	- For nginx, add something like this to do the same:
 	```
     location / {
-      rewrite ^ /index.php;
+      rewrite ^([^.\?]*[^/])$ $1/ permanent;  # Add trailing slash for relative links
+      rewrite ^ /index.php;                   # Prevent access to anything except for index.php
     }
 	```
 1. Put the preformatted text in `contents.txt`, or Markdown formatted text in `contents.md`
