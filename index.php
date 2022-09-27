@@ -88,10 +88,14 @@ if (!isset($prompt)) {
 
 	if ($format == "md") {
 		function getImage($img) {
-			$book = $GLOBALS["book"];
-				return "<figure><img src=\"data:image;base64,"
-					. base64_encode(@file_get_contents("$book/$img[2]"))
-					."\"><figcaption>$img[1]</figcaption></figure>";
+			$book    = $GLOBALS["book"];
+			$caption = $img[1];
+			$image   = $img[2];
+			if ($float = str_ends_with($caption, " <") ? "left" : (str_ends_with($caption, " >") ? "right" : ""))
+				$caption = substr($caption, 0, -2);
+			return "<figure class=\"$float\"><img src=\"data:image;base64,"
+				. base64_encode(@file_get_contents("$book/$image"))
+				."\" onclick=\"zoom(this)\"><figcaption>$caption</figcaption></figure>";
 		};
 
 		$contents = preg_replace("/_(.+?)_/m", "<i>$1</i>", $contents);
@@ -201,9 +205,14 @@ echo <<<END
 				font-style: italic;
 				text-align: center;
 				border-radius: 4px;
-				float: left;
 				break-inside: avoid-column;
 			}
+				figure.left {
+					float: left;
+				}
+				figure.right {
+					float: right;
+				}
 				figure img {
 					max-width: 100%;
 					max-height: calc(100vh - 9rem);
@@ -355,6 +364,11 @@ echo <<<END
 				let to = prompt("{$str->jumpPage}:") - 1;
 				if (!isNaN(to) && to > -1)
 					jump(to);
+			},
+			zoom = (img) => {
+				let win = window.open("", "_blank");
+				win.document.write(`<title>🎨 \${document.title}</title><img src="\${img.src}">`);
+				win.document.close();
 			},
 
 			/* Pagination Functions */

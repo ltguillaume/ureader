@@ -1,6 +1,12 @@
+uReader
+Links like https://github.com/ltGuillaume/uReader are always made clickable
+
+Basic Markdown is active when using "contents.md" instead of "contents.txt":
 # Title
 ## Header
-Basic Markdown is optional:
-![Image](index.ico)_italic_
 *bold*
-HTTP links like https://github.com/ltGuillaume/uReader or [this](https://github.com/ltGuillaume/uReader)
+_italic_
+[Link](github.com/ltGuillaume/uReader)
+![Inline image](image.jpg)
+![Left floating image <](image.jpg)
+![Right floating image >](image.jpg)
