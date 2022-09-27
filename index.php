@@ -368,8 +368,8 @@ echo <<<END
 					jump(to);
 			},
 			zoom = (img) => {
-				let win = window.open("", "_blank");
-				win.document.write(`<title>🎨 \${document.title}</title><img src="\${img.src}">`);
+				let win = window.open("about:blank");
+				win.document.write(`<style>*{max-width:100%;background:black}</style><title>🎨 \${document.title}</title><img src="\${img.src}"></body>`);
 				win.document.close();
 			},
 
