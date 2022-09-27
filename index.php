@@ -31,7 +31,7 @@ $str["nl"] = (object)[
 	"jumpPage" => "Naar pagina"
 ];
 
-$dir       = substr(strtok($_SERVER['REQUEST_URI'], '?'), strlen(dirname($_SERVER['SCRIPT_NAME'])));
+$dir       = substr(strtok($_SERVER["REQUEST_URI"], "?"), strlen(dirname($_SERVER["SCRIPT_NAME"])));
 $book      = trim($dir, "/") ?: ".";
 $config    = "config.php";
 $contents  = "$book/contents.";
@@ -60,12 +60,12 @@ $contents  = file_get_contents($contents);
 $title     = preg_replace("/^#+ */", "", strtok($contents, "\n"));
 
 if (isset($watchword)) {
-	if (!$_GET["ww"] && !$_POST["ww"])
+	if (!isset($_GET["ww"]) && !isset($_POST["ww"]))
 		$prompt = "$str->enterWw:";
-	else if ($_GET["ww"] != $watchword && $_POST["ww"] != $watchword)
+	else if ((isset($_GET["ww"]) && $_GET["ww"] != $watchword) || (isset($_POST["ww"]) && $_POST["ww"] != $watchword))
 		$prompt = "$str->wrongWw<br>$str->enterWw:";
 
-	if ($prompt)
+	if (isset($prompt))
 		$contents = <<<WW
 			<form action="//{$_SERVER["HTTP_HOST"]}{$_SERVER["REQUEST_URI"]}" method="post">
 				<br>{$prompt}<br>
@@ -460,7 +460,7 @@ echo <<<END
 		}, { passive: false });
 
 		/* Listeners */
-		window.addEventListener('resize', calcDims);
+		window.addEventListener("resize", calcDims);
 		window.addEventListener("scroll", () => {
 			if (freeScroll) return;
 			if (pageTurning)
