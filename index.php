@@ -197,7 +197,6 @@ echo <<<END
 					border: 0;
 				}
 			figure {
-				max-width: 42%;
 				max-height: calc(100vh - 6rem);
 				margin-right: .5em;
 				padding: .3rem;
@@ -205,19 +204,23 @@ echo <<<END
 				color: var(--lighttxt);
 				font-size: 1rem;
 				font-style: italic;
+				font-weight: normal;
 				text-align: center;
 				border-radius: 4px;
 				break-inside: avoid-column;
 			}
 				figure.left {
+					max-width: 50%;
 					float: left;
 				}
 				figure.right {
+					max-width: 50%;
 					float: right;
 				}
 				figure img {
 					max-width: 100%;
 					max-height: calc(100vh - 9rem);
+					cursor: pointer;
 				}
 			form {
 				text-align: center;
