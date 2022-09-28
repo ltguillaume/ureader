@@ -95,9 +95,11 @@ if (!isset($prompt)) {
 			$image   = $img[2];
 			if ($float = str_ends_with($caption, " <") ? "left" : (str_ends_with($caption, " >") ? "right" : ""))
 				$caption = substr($caption, 0, -2);
-			return "<figure class=\"$float\"><img src=\"data:image;base64,"
-				. base64_encode(@file_get_contents("$book/$image"))
-				."\" onclick=\"zoom(this)\"><figcaption>$caption</figcaption></figure>";
+			return
+				"<figure class=\"$float\">".
+					"<img src=\"$image\" onclick='window.open(\"$image\")'>".
+					"<figcaption>$caption</figcaption>".
+				"</figure>";
 		};
 
 		$contents = preg_replace("/_(.+?)_/m", "<i>$1</i>", $contents);
@@ -372,11 +374,6 @@ echo <<<END
 				let to = prompt("{$str->jumpPage}:") - 1;
 				if (!isNaN(to) && to > -1)
 					jump(to);
-			},
-			zoom = (img) => {
-				let win = window.open("about:blank");
-				win.document.write(`<style>*{max-width:100%;background:black}</style><title>🎨 \${document.title}</title><img src="\${img.src}"></body>`);
-				win.document.close();
 			},
 
 			/* Pagination Functions */

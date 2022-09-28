@@ -23,8 +23,11 @@ Minimal code to present a preformatted plain text document for comfortable readi
 	```
     location / {
       rewrite ^([^.\?]*[^/])$ $1/ permanent;  # Add trailing slash for relative links
-      rewrite ^ /index.php;                   # Prevent access to anything except for index.php
-    }
+      try_files $uri /index.php;
+
+      location ~* contents\.(md|txt) {
+        rewrite ^ /index.php;                 # Prevent access to contents directly
+      }
 	```
 1. Put the preformatted text in `contents.txt`, or Markdown formatted text in `contents.md`
 1. For offering multiple books/chapters you can put `contents.txt`/`contents.md` into subfolders (and optionally add a `config.php` for per-book settings)
