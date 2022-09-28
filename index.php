@@ -300,6 +300,9 @@ echo <<<END
 				html, body {
 					height: auto;
 				}
+					html.js #contents:after {
+						display: none;
+					}
 				#controls, #pagenum {
 					display: none !important;
 				}
