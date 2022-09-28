@@ -23,7 +23,7 @@ Minimal code to present a preformatted plain text document for comfortable readi
 	```
     location / {
       rewrite ^([^.\?]*[^/])$ $1/ permanent;  # Add trailing slash for relative links
-      try_files $uri /index.php;
+      try_files $uri /index.php?$query_string;
 
       location ~* contents\.(md|txt) {
         rewrite ^ /index.php;                 # Prevent access to contents directly
