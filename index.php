@@ -31,11 +31,15 @@ $str["nl"] = (object)[
 	"jumpPage" => "Naar pagina"
 ];
 
-$dir       = substr(strtok($_SERVER["REQUEST_URI"], "?"), strlen(dirname($_SERVER["SCRIPT_NAME"])));
+$scriptDir = dirname($_SERVER["SCRIPT_NAME"]);
+$dir       = substr(strtok($_SERVER["REQUEST_URI"], "?"), strlen($scriptDir));
+
 $book      = trim($dir, "/") ?: ".";
 $config    = "config.php";
 $contents  = "$book/contents.";
-$font      = "fanwood_text.woff";
+$counters  = "";
+$font      = rtrim($scriptDir, "/") ."/fanwood_text.woff";
+$icon      = rtrim($scriptDir, "/") ."/". pathinfo(__FILE__)["filename"] .".ico";
 $wordsPMin = 250;
 
 if (is_readable($config))
@@ -78,11 +82,6 @@ if (isset($watchword)) {
 WW;
 }
 
-$counters = "";
-$icon     = pathinfo(__FILE__)["filename"] .".ico";
-$iconData = is_readable($icon) ? base64_encode(file_get_contents($icon)) : "";
-$fontData = is_readable($font) ? base64_encode(file_get_contents($font)) : "";
-
 if (!isset($prompt)) {
 	$words    = str_word_count($contents);
 	$rTime    = round($words / $wordsPMin);
@@ -116,7 +115,7 @@ echo <<<END
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="icon" type="image/ico" href="data:image/x-icon;base64,{$iconData}">
+		<link rel="icon" type="image/ico" href="{$icon}">
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="referrer" content="no-referrer">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -129,7 +128,7 @@ echo <<<END
 		<style>
 			@font-face {
 				font-family: Fanwood;
-				src: url(data:application/x-font-woff;base64,{$fontData});
+				src: url($font);
 			}
 			:root {
 				--figurebg: #fdf5e6bb;
