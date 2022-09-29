@@ -339,7 +339,7 @@ echo <<<END
 			theme = 0,
 			touchDevice = "ontouchstart" in window,
 			touchStartX,
-			touchDeltaX,
+			touchDeltaX = 0,
 
 			/* Elements */
 			book = document.getElementById("book"),
