@@ -79,8 +79,6 @@ WW;
 }
 
 $counters = "";
-$icon     = pathinfo(__FILE__)["filename"] .".ico";
-$iconData = is_readable($icon) ? base64_encode(file_get_contents($icon)) : "";
 $fontData = is_readable($font) ? base64_encode(file_get_contents($font)) : "";
 
 if (!isset($prompt)) {
@@ -97,7 +95,7 @@ if (!isset($prompt)) {
 				$caption = substr($caption, 0, -2);
 			return "<figure class=\"$float\"><img src=\"data:image;base64,"
 				. base64_encode(@file_get_contents("$book/$image"))
-				."\" onclick=\"zoom(this)\"><figcaption>$caption</figcaption></figure>";
+				."\" onclick=\"pop(this)\"><figcaption>$caption</figcaption></figure>";
 		};
 
 		$contents = preg_replace("/_(.+?)_/m", "<i>$1</i>", $contents);
@@ -114,7 +112,7 @@ echo <<<END
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="icon" type="image/ico" href="data:image/x-icon;base64,{$iconData}">
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="referrer" content="no-referrer">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -373,9 +371,14 @@ echo <<<END
 				if (!isNaN(to) && to > -1)
 					jump(to);
 			},
-			zoom = (img) => {
+			pop = (img) => {
 				let win = window.open("about:blank");
-				win.document.write(`<style>*{max-width:100%;background:black}</style><title>🎨 \${document.title}</title><img src="\${img.src}"></body>`);
+				win.document.write(`
+					<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+					<style>*{max-width:100%; background:black}</style>
+					<title>\${document.title}</title>
+					<img src="\${img.src}">
+				`);
 				win.document.close();
 			},
 
