@@ -233,7 +233,7 @@ echo <<<END
 				font-weight: normal;
 			}
 			h2 {
-				font-size: 1.3rem;
+				font-size: 1.4rem;
 			}
 			input {
 				margin: .3rem;
