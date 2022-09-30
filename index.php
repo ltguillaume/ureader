@@ -8,7 +8,6 @@ $dir       = substr(strtok($_SERVER["REQUEST_URI"], "?"), strlen($scriptDir));
 $book      = trim($dir, "/") ?: ".";
 $config    = "config.php";
 $contents  = "$book/contents.";
-$counters  = "";
 $font      = "fanwood_text.woff";
 $icon      = pathinfo(__FILE__)["filename"] .".ico";
 $wordsPMin = 250;
