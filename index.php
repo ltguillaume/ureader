@@ -332,6 +332,7 @@ echo <<<END
 			fontSize = 1,
 			offset,
 			freeScroll = 0,
+			isFirefox = navigator.userAgent.indexOf("Firefox") > 0,
 			page,
 			pages,
 			pageCalc,
@@ -454,7 +455,8 @@ echo <<<END
 		/* Touch Navigation */
 		book.addEventListener("touchstart", (e) => {
 			if (freeScroll) return;
-			e.preventDefault();
+			if (!isFirefox || e.target.id == "contents")
+				e.preventDefault();
 			touchStartX = e.changedTouches[0].screenX;
 		}, 1);
 		book.addEventListener("touchmove", (e) => {
@@ -465,14 +467,15 @@ echo <<<END
 		}, 1);
 		book.addEventListener("touchend", (e) => {
 			if (freeScroll) return;
-			e.preventDefault();
+			if (!isFirefox && e.target.id != "contents" && Math.abs(touchDeltaX) < 10) {
+				e.preventDefault();
+				e.target.click();
+			}
 			touchStartX = null;
 			if (touchDeltaX < -offset)
 				page--;
 			else if (touchDeltaX > offset)
 				page++;
-			else if (e.target.id != "contents" && Math.abs(touchDeltaX) < 10)
-				e.target.click();
 			touchDeltaX = 0;
 			turn(page);
 		}, 1);
