@@ -210,11 +210,11 @@ echo <<<END
 				break-inside: avoid-column;
 			}
 				figure.left {
-					max-width: 50%;
+					max-width: 42%;
 					float: left;
 				}
 				figure.right {
-					max-width: 50%;
+					max-width: 42%;
 					float: right;
 				}
 				figure img {
