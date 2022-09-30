@@ -1,2 +1,4 @@
-Options -Indexes
-RewriteRule ^(.*) index.php
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} contents\.(md|txt) [NC,OR]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php
