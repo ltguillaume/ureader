@@ -98,14 +98,16 @@ if (!isset($prompt)) {
 				."\" onclick=\"pop(this)\"><figcaption>$caption</figcaption></figure>";
 		};
 
+		$param = isset($watchword) ? "?ww=$watchword" : "";
 		$contents = preg_replace("/_(.+?)_/m", "<i>$1</i>", $contents);
 		$contents = preg_replace("/\*(.+?)\*/m", "<b>$1</b>", $contents);
 		$contents = preg_replace("/^##\s*(.+?)$\n/m", "<h2>$1</h2>", $contents);
 		$contents = preg_replace("/^#\s*(.+?)$\n/m",  "<h1>$1</h1>", $contents);
-		$contents = preg_replace("/([^!])\[(.+?)\]\((.+?)\)/", "$1<a rel=\"noreferrer\" href=\"$3\">$2</a>", $contents);
+		$contents = preg_replace("/([^!])\[(.+?)\]\(([^:]+?)\)/", "$1<a href=\"$3$param\">$2</a>", $contents);
+		$contents = preg_replace("/([^!])\[(.+?)\]\((.+?)\)/", "$1<a rel=\"noreferrer\" target=\"_blank\" href=\"$3\">$2</a>", $contents);
 		$contents = preg_replace_callback("/!\[(.*?)\]\((.+?)\)/", "getImage", $contents);
 	}
-	$contents = preg_replace("/(?<!href=\")(https?:\/\/.+?)(\s|$)/", "<a rel=\"noreferrer\" href=\"$1\">$1</a>$2", $contents);
+	$contents = preg_replace("/(?<!href=\")(https?:\/\/.+?)(\s|$)/", "<a rel=\"noreferrer\" target=\"_blank\" href=\"$1\">$1</a>$2", $contents);
 }
 
 echo <<<END
