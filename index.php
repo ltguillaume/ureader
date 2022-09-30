@@ -376,6 +376,7 @@ echo <<<END
 			pop = (img) => {
 				let win = window.open("about:blank");
 				win.document.write(`
+					<meta name="viewport" content="user-scalable=yes">
 					<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
 					<style>*{max-width:100%; background:black}</style>
 					<title>\${document.title}</title>
