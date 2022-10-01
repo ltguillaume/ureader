@@ -8,5 +8,5 @@ Basic Markdown is active when using "contents.md" instead of "contents.txt":
 _italic_
 [Link](github.com/ltGuillaume/uReader)
 ![Inline image](image.jpg)
-![Left floating image <](image.jpg)
-![Right floating image >](image.jpg)
+![Left floating image <](image.jpg) or ![<](image.jpg) without caption
+![Right floating image >](image.jpg) or ![>](image.jpg) without caption

@@ -91,7 +91,7 @@ if (!isset($prompt)) {
 			$book    = $GLOBALS["book"];
 			$caption = $img[1];
 			$image   = $img[2];
-			if ($float = str_ends_with($caption, " <") ? "left" : (str_ends_with($caption, " >") ? "right" : ""))
+			if ($float = str_ends_with($caption, "<") ? "left" : (str_ends_with($caption, ">") ? "right" : ""))
 				$caption = substr($caption, 0, -2);
 			return "<figure class=\"$float\"><img src=\"data:image;base64,"
 				. base64_encode(@file_get_contents("$book/$image"))
