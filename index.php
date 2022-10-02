@@ -215,6 +215,7 @@ echo <<<END
 				}
 				figure.right {
 					max-width: 42%;
+					margin-left: .5em;
 					float: right;
 				}
 				figure img {
