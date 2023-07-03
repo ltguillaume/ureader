@@ -60,9 +60,24 @@ $contents  = file_get_contents($contents);
 $title     = preg_replace("/^#+ */", "", strtok($contents, "\n"));
 
 if (isset($watchword)) {
-	if (!isset($_GET["ww"]) && !isset($_POST["ww"]))
+	if (session_status() != PHP_SESSION_ACTIVE)
+		session_start([
+			"cache_limiter"   => "nocache",
+			"cookie_httponly" => 1,
+			"cookie_lifetime" => 0,
+			"cookie_samesite" => "strict",
+			"cookie_secure"   => 1
+		]);
+
+	$hash  = hash("sha256", $watchword);
+	$ww    = $_GET["ww"] ?? $_POST["ww"] ?? false;
+	$match = $ww == $watchword || $_SESSION["ww"] == $hash;
+
+	if ($match)
+		$_SESSION["ww"] = $hash;
+	else if (!$ww)
 		$prompt = "$str->enterWw:";
-	else if ((isset($_GET["ww"]) && $_GET["ww"] != $watchword) || (isset($_POST["ww"]) && $_POST["ww"] != $watchword))
+	else if (!$match)
 		$prompt = "$str->wrongWw<br>$str->enterWw:";
 
 	if (isset($prompt))
@@ -98,12 +113,11 @@ if (!isset($prompt)) {
 				."\" onclick=\"pop(this)\"><figcaption>$caption</figcaption></figure>";
 		};
 
-		$param = isset($watchword) ? "?ww=$watchword" : "";
 		$contents = preg_replace("/_(.+?)_/m", "<i>$1</i>", $contents);
 		$contents = preg_replace("/\*(.+?)\*/m", "<b>$1</b>", $contents);
 		$contents = preg_replace("/^##\s*(.+?)$\n/m", "<h2>$1</h2>", $contents);
 		$contents = preg_replace("/^#\s*(.+?)$\n/m",  "<h1>$1</h1>", $contents);
-		$contents = preg_replace("/([^!])\[(.+?)\]\(([^:]+?)\)/", "$1<a href=\"$3$param\">$2</a>", $contents);
+		$contents = preg_replace("/([^!])\[(.+?)\]\(([^:]+?)\)/", "$1<a href=\"$3\">$2</a>", $contents);
 		$contents = preg_replace("/([^!])\[(.+?)\]\((.+?)\)/", "$1<a rel=\"noreferrer\" target=\"_blank\" href=\"$3\">$2</a>", $contents);
 		$contents = preg_replace_callback("/!\[(.*?)\]\((.+?)\)/", "getImage", $contents);
 	}
@@ -353,7 +367,7 @@ echo <<<END
 				let text = el.textContent;
 				el.textContent = el.title;
 				el.title = text;
-			}
+			},
 			setScroll = (e) => {
 				e.preventDefault();
 				if (freeScroll ^= 1)

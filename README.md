@@ -16,7 +16,7 @@ Minimal code to present a preformatted plain text document for comfortable readi
 - Optional protection with a watchword, passed on directly as URL parameter or entered via a prompt
 
 ## Getting started
-1. Copy the files to a server with PHP
+1. Copy the files to a server with PHP7+
 1. (Optional) Copy `config.php.template` to `config.php` and set the variables to your liking
 	- For Apache, use `.htaccess` to prevent access to the contents directly
 	- For nginx, add something like this to do the same:
